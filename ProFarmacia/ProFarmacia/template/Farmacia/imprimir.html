@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block Inventario %}
+
+<style type="text/css">
+	h1{color: white; display:block; background:black; padding: 5px; text-align: center;}
+	table{padding: 5px;}
+	th{color: black ; background:skyblue;}
+	td{text-align: inherit;}
+</style>
+
+<h1>Medicamentos en Inventario</h1>
+
+<table  class="table hovered" border="1">
+	<tr>
+		
+		<th class="text-left">Nombre de Medicamento</th>
+		<th class="text-left">Cantidad en Inventario</th>
+		<th class="text-left">Presio Unitario</th>
+		<th class="text-left">Categoria</th>
+		
+{%for item in Minventario%}
+	<tr>
+		<td>{{ item.Name_med }}</td>
+		<td>{{ item.Cantidad }}</td>
+		<td>{{ item.Costo }} Bs</td>
+		<td>{{ item.Categoria  }} </td>
+	</tr>    
+{% endfor %}
+
+</table>
+{% endblock %}

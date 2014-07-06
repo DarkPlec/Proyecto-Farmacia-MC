@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block Rinventario %}
+
+    
+
+    <div class="tile-area tile-area-dark">
+     <div><h2 class="tile-area-title fg-white">Registre Su Medicamento</h2></div>
+     <center>
+     <form name="registro" method="post" > {% csrf_token %}
+          <div  class="tile-group-title fg-white">
+                    <div>
+                    	<div>{{ formRM.Name_med.errors }}</div>
+                    	<label><strong>Nombre de Medicamento:</strong></label>
+                    	<div>{{ formRM.Name_med }}</div>
+
+                    </div>
+
+                    <div>
+                    	<div>{{ formRM.Cantidad.errors }}</div>
+                    	<label><strong>Cantidad:</strong></label>
+                    	<div>{{ formRM.Cantidad }}</div>
+
+                    </div>
+
+                    <div>
+                    	<div>{{ formRM.Presio.errors }}</div>
+                    	<label><strong>Presio Unitario:</strong></label>
+                    	<div>{{ formRM.Presio }}</div>
+
+                    </div> 
+                    <div>
+
+                        <div>{{ formRM.CategoriaM.errors }}</div>
+                        <label><strong>Categoria Medicamento:</strong></label>
+                        <div>{{ formRM.CategoriaM }}</div>
+
+                    </div>
+
+                    <div>
+                        </br>
+                    </div>
+                
+
+                    <div>
+                        <input type="submit" class="primary" value="registrar" />
+                        <input type="reset" class="bg-darkRed fg-white" value="Cancelar" />
+                    </div>   
+
+    </form> 
+    </center>
+{% endblock %}

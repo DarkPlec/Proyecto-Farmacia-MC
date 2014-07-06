@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block Inventario %}
+
+<nav class="navigation-bar dark">
+    <nav class="navigation-bar-content drop-up">
+        <div class="element">
+            <a class="dropdown-toggle" href="#">Su Farmacia</a>
+
+            <ul class="dropdown-menu" data-role="dropdown">
+                <li><a href="/Ventas/">Pagina Principal</a></li>
+                <li><a href="/EditarUsuario/">Editar mi Informacion</a></li>
+                <li class="divider"></li>
+                <li><a href="/Minventario/">Revisar Inventario</a></li>
+                <li class="divider"></li>
+                <li><a href="/cerrar/">Cerrar Secion</a></li>
+            </ul>
+        </div>
+        
+        <span class="element-divider"></span>
+        <a class="element brand" href="#"><span class="icon-spin"></span></a>
+        <a class="element brand" href="/Imprimir_Inventario/"><span class="icon-printer"></span></a>
+        <span class="element-divider"></span>
+        
+                
+        
+ 
+        <div class="element place-right">
+            <a class="dropdown-toggle" href="#">
+                <span class="icon-cog"></span>
+            </a>
+            <ul class="dropdown-menu place-right" data-role="dropdown">
+                <li><a href="/Rginventario/">Registrar Inventario</a></li>
+                <li><a href="/Ventas/">Ventas</a></li>
+                <li><a href="/Imprimir_reportes/">Reportes Ventas</a></li>
+                <li><a href="#">Buy Now</a></li>
+            </ul>
+        </div>
+        <span class="element-divider place-right"></span>
+        <a class="element place-right" href="#"><span class="icon-locked-2"></span></a>
+        <span class="element-divider place-right"></span>
+        <button class="element image-button image-left place-right">
+            {{usuario}}
+            <img src="/static/images/live1.jpg"/>
+        </button>
+    </nav>
+</nav>
+
+<h1><a href="/Ventas/">	<i class="icon-arrow-left-3 fg-darker smaller"></i></a>Medicamentos</h1>
+<a href="/Rginventario/" style="position:absolute; right:90px; top:100px;"><button class="success">Registrar Nuevo</button></a>
+<div>
+
+<nav class="breadcrumbs">
+	<form method="POST" action="" name="categoria">
+    <ul>
+
+        <li class="active"><a href="/Minventario/">Todos</a></li>
+        <li><a href="/CategoriaP/">Prescripcion</a></li>
+        <li><a href="/CategoriaOral/">Oral</a></li>
+        <li><a href="/CategoriaTl/">Parenteral</a></li>
+        <li><a href="/CategoriaTopica/">Topica</a></li>
+        <li><a href="/CategoriaInyeccion/">Inyeccion</a></li>
+        <li><a href="/CategoriaSublingual/">Sublingual</a></li>
+        <li><a href="/CategoriaRectal/">Rectal</a></li>
+        <li><a href="/Categoriatransdermica/">transdermica</a></li>
+        <li><a href="/CategoriaInhalada/">Inhalada</a></li>
+        <li></li>
+    </ul>
+    </form>
+</nav>
+
+</div>
+<table  class="table hovered" >
+	<tr>
+		
+		<th class="text-left">Nombre de Medicamento</th>
+		<th class="text-left">Cantidad en Inventario</th>
+		<th class="text-left">Presio Unitario</th>
+		<th class="text-left">Categoria</th>
+		
+{%for item in Minventario%}
+	<tr>
+		<td>{{ item.Name_med }}</td>
+		<td>{{ item.Cantidad }}</td>
+		<td>{{ item.Costo }} Bs</td>
+		<td>{{ item.Categoria  }} </td>
+		<td><a href="/Editar/{{item.id}}/"><button class="warning">Editar</button></a>
+			
+		</td>
+		<td><a href="/Eliminar/{{item.id}}/"><button class="danger">Eliminar</button></a>
+		</td>
+
+	</tr>    
+{% endfor %}
+
+</table>
+{% endblock %}

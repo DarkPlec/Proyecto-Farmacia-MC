@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block Ventas %}
+
+<nav class="navigation-bar dark">
+    <nav class="navigation-bar-content drop-up">
+        <div class="element">
+            <a class="dropdown-toggle" href="#">Su Farmacia</a>
+
+            <ul class="dropdown-menu" data-role="dropdown">
+                <li><a href="/Ventas/">Pagina Principal</a></li>
+                <li><a href="/EditarUsuario/">Editar mi Informacion</a></li>
+                <li class="divider"></li>
+                <li><a href="/Minventario/">Revisar Inventario</a></li>
+                <li class="divider"></li>
+                <li><a href="/cerrar/">Cerrar Secion</a></li>
+            </ul>
+        </div>
+        
+        <span class="element-divider"></span>
+        <a class="element brand" href="/Ventas/"><span class="icon-spin"></span></a>
+        <a class="element brand" href="/Imprimir_Inventario/"><span class="icon-printer"></span></a>
+        <span class="element-divider"></span>
+
+        <div class="element input-element">
+            <form method="POST" name="buscardor">
+                {%csrf_token%}
+              <span style="top:-5px;position:relative;">Buscar Medicamento </span>
+              <div class="input-control text">
+                    {{formB.B_med}}
+                    <button class="btn-search"></button>
+                </div>
+            </form>
+        </div>
+                
+        
+ 
+        <div class="element place-right">
+            <a class="dropdown-toggle" href="#">
+                <span class="icon-cog"></span>
+            </a>
+            <ul class="dropdown-menu place-right" data-role="dropdown">
+                <li><a href="/Rginventario/">Registrar Inventario</a></li>
+                <li><a href="/Ventas/">Ventas</a></li>
+                <li><a href="/Imprimir_reportes/">Reportes Ventas</a></li>
+                <li><a href="#">Buy Now</a></li>
+            </ul>
+        </div>
+        <span class="element-divider place-right"></span>
+        <a class="element place-right" href="#"><span class="icon-locked-2"></span></a>
+        <span class="element-divider place-right"></span>
+        <button class="element image-button image-left place-right">
+            {{ usuario}}
+            <img src="/static/images/live1.jpg"/>
+        </button>
+    </nav>
+</nav>
+
+<div>
+    <table class="table striped" style="width:500px; position:absolute; top:60px; left:450px">
+        {%for item in lis_M%}
+        <tr>
+            <td>Medicamento: {{ item.Name_med }}</td>
+            <td>Cantidad: {{ item.Cantidad }}</td>
+            <td>P/u: {{ item.Costo }} Bs</td>
+        </tr>    
+        {% endfor %}
+    </table>
+</div>
+<div>
+    <h2 style="width:500px; position:absolute; top:60px; left:550px">{{ErrorM}}</h2>
+</div>
+
+
+<div>
+	<form action="" method="post" id="Ventas">
+		{% csrf_token %}
+        <table class="table bordered" style="width:500px; position:absolute; top:100px; left:450px">
+        <tr>
+            <td colspan="2" align="center"><h2>Venta Medicamentos</h2></td>
+        </tr>
+		<tr>
+            <td>Nombre Medicamento</td>
+            <td>{{ formV.N_medicamento }}</td>
+        </tr>
+        <tr>
+            <td>Cantidad a vender</td>
+            <td>{{ formV.Cant }}</td>
+        </tr>
+        <tr>
+            <td><div><br></div></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="vender"/>
+                <input type="reset" value="cancelar"/>
+            </td>
+        </tr>
+		
+        </table>
+	</form>
+</div>
+
+<div>
+    <table class="table hovered" style="width:600px; position:absolute; top:350px; left:420px">
+            <tr>
+                <th align="justify">Medicamento |</th>
+                <th align="justify">Inventario |</th>
+                <th align="justify">Categoria |</th>
+                <th align="justify">Presio Uniario |</th>
+                <th align="justify">TOTAL COBRO Bs|</th>
+            </tr>
+            <tr>
+                <th>{{nombre}}  </th>
+                <th>{{cantidad}}</th>
+                <th>{{categoria}}</th>
+                <th>{{presio}}</th>
+                <th>{{Total}}</th>
+            </tr>
+            <tr>
+                <th colspan="5" align="center"><h2>{{Error}} {{ErrorS}}</h2></th>
+            </tr>
+    </table>
+</div>
+
+<div style="position:absolute; left:-10px; top:100px;">
+         <img src="{{STATIC_URL}}images/Farmacia.png" width="320px">
+    </div>
+
+<div style="position:absolute; right:3px; top:100px;">
+         <img src="{{STATIC_URL}}images/Cruz.png" width="310px">
+    </div>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block B_global %}
+<div style="position:absolute; left:20px; top:15px">
+	<h1><a href="/Principal/"><i class="icon-arrow-left-3 fg-darker smaller"></i></a></h1><h2>Volver Atras</h2>
+</div>
+<div style="position:absolute; top:10px; left:460px;">
+	<form action="" method="post" >
+		{% csrf_token %}
+		<table>
+			<tr>
+				<td align="center"><h1>Buscar Medicamento</h1></td>
+			</tr>
+			<tr>
+				
+				<td align="center">{{formBG.N_Medicamento}}</td>
+				<td >{{ formulario.N_Medicamento.errors }}</td>
+			</tr>
+			<tr><td><br></b></td></tr>
+			<tr>
+				<td colspan="2" align="center"><input type="submit" value="Buscar"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div style="position:absolute; left:90px;">
+
+<table class="table bordered" style=" width:700px; position:absolute; left:-70px;top:200px; ">
+		<tr>
+			<th width="200px">Medicamento</th>
+			<th width="150px">Presios</th>
+			<th width="200px">Farmacia</th>
+			<th width="300px" >Ubicacion</th>
+		</tr>
+</table>
+	<div>
+	<table border="1" style="position:absolute; left:-70px; top:250px; width:297px"; class="table bordered">
+		
+			{%for item in med%}
+			
+			<tr>
+			<td width="200px">{{ item.Name_med }}</td>
+			<td width="150px">{{ item.Costo }} Bs</td>
+			</tr> 
+			
+			{% endfor %}
+	</table>
+
+	<table border="1" style="position:absolute; left:226px; top:250px;width:166px"; class="table bordered" >
+		{%for i in F%}
+		<tr>
+			<td>
+				{{i}}	
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+
+	<table border="1" style="position:absolute; left:390px; top:250px;width:241px"; class="table bordered" >
+		{%for i in U%}
+		<tr>
+			<td >
+				
+				<a longitud="{{i}}" class="boton">Ver Ubicacion en el Mapa</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+
+	</div>	
+
+</div>
+
+<div style="position:absolute; top:150px; left:550px">
+	<span><h2 style="color:red;">{{Error}}</h2></span>
+</div>
+<script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCoOp3yD1ZWYe5AyCZJvcpoGD2nNYfk6wE&sensor=false">
+ </script>
+
+
+<style type="text/css">
+			#mapas{
+
+				width:600px;
+				height:425px;
+			}
+</style>
+	<script type="text/javascript">
+        //Declaramos las variables que vamos a user
+	//var lat = null;
+	//var lng = null;
+	var map = null;
+	var geocoder = null;
+	var marker = null;
+    var longitud;   
+
+	$(document).ready(inicio);
+	function inicio()
+	{
+    $(".boton" ).click(function( event ) {
+        event.preventDefault();
+        longitud=$(this).attr("longitud");
+        //var latitud=$(this).attr("latitud");
+        //alert(longitud);
+        //Aqui llamas a la funcion que ya tiene para dibujar el mapa por ejemplo si seria dibujar:
+        initialize();
+    });
+	}
+  
+    function initialize() {
+
+     	var Pos=longitud.toString();
+     	var lon = new Array()
+     	var lat = new Array()
+
+     	for (var i = 0; i< Pos.length; i++) {
+         var caracter = Pos.charAt(i);
+         if( caracter == ",") {
+         		break;
+          	}  
+         else
+         	  lon[i]=caracter
+   		}
+
+   		longt=parseFloat(lon.join(""));//longitud
+
+   		for (var j = 0; j< Pos.length; j++) {
+         var caracter = Pos.charAt((j+lon.length)+1);
+         		lat[j]=caracter 
+   		}
+
+   		latit=parseFloat(lat.join(""));//latitud
+
+        //geocoder = new google.maps.Geocoder();
+        //Si no creamos el objeto con una latitud cualquiera como la de Mar del Plata, Argentina por ej
+         var latLng = new google.maps.LatLng(longt,latit);
+      
+      		//Definimos algunas opciones del mapa a crear
+       	 var myOptions = {
+          center: latLng,//centro del mapa
+          zoom: 17,//zoom del mapa
+          mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa, carretera, híbrido,etc
+          };
+        //creamos el mapa con las opciones anteriores y le pasamos el elemento div
+        	map = new google.maps.Map(document.getElementById("mapas"), myOptions);
+         
+        //creamos el marcador en el mapa
+        	marker = new google.maps.Marker({
+            map: map,//el mapa creado en el paso anterior
+            position: latLng,//objeto con latitud y longitud
+            //draggable: true //que el marcador se pueda arrastrar
+        });
+        
+      	 //función que actualiza los input del formulario con las nuevas latitudes
+      	 //Estos campos suelen ser hidden
+       
+         
+   	 }
+    
+    </script>
+
+	<div id="mapas" style="position: absolute; top:200px; right:20px;">
+
+	</div>
+
+	<div style="position:absolute; left:300px; top:5px;">
+    	 <img src="{{STATIC_URL}}images/Marcador.png" width="200px">
+ 	</div>
+ 	<div style="position:absolute; right:300px; top:5px;">
+    	 <img src="{{STATIC_URL}}images/Marcador.png" width="210px">
+ 	</div>
+
+
+{% endblock %}

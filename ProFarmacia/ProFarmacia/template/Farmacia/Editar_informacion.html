@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block Efarmacia %}
+<div class="tile-area tile-area-dark">
+     <div><h2 class="tile-area-title fg-white">Editar Informacion</h2></div>
+    
+     <div style="position:absolute; left:20px; top:25px;">
+        <a href="/Ventas/"><button style="background-color:#1d1d1d;">
+             <img src="{{STATIC_URL}}images/back.png"   width="30px" >
+        </button></a>
+    </div>
+
+     <form name="registro" method="post" > {% csrf_token %}
+          <div  class="tile-group-title fg-white">
+                    <div>
+                        <div>{{ form.farmacia.errors }}</div>
+                        <label><strong>Nombre de Farmacia:</strong></label>
+                        <div>{{ form.farmacia}}</div>
+
+                    </div>
+
+                    <div>
+                        <div>{{ form.ubicacion.errors }}</div>
+                        <label><strong>Ubicacion:</strong></label>
+                        <div>{{ form.ubicacion }}</div>
+
+                    </div>
+
+                    <div>
+                        <div>{{ form.email.errors }}</div>
+                        <label><strong>Correo Electronico:</strong></label>
+                        <div>{{ form.email }}</div>
+
+                    </div> 
+
+                    <div>
+                        </br>
+                    </div>
+                
+
+                    <div>
+                        <input type="submit" class="primary" value="registrar" />
+                        <input type="reset" class="bg-darkRed fg-white" value="Cancelar" />
+                    </div>   
+                    <div style="width:300px;">
+                        {{Error}}
+                        {{Exito}}
+                    </div> 
+
+    </form> 
+
+
+
+ <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB41nzA2wkLN3f-GIxT4Ytc07wce2Anneg&sensor=false">
+ </script>
+
+    <style type="text/css">
+            #mapas{
+
+                width:800px;
+                height:500px;
+            }
+    </style>
+    <script type="text/javascript">
+        var map
+        jQuery(document).ready(function($) {
+            var mapOptions = {
+                center: new google.maps.LatLng(-19.574676,-65.760598),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+             map = new google.maps.Map(document.getElementById("mapas"),mapOptions);
+             google.maps.event.addDomListener(map, 'click', showAlert);
+
+        });
+        var arreglo=""
+        var showAlert=function(e){
+                borrar(null)
+                $("#id_ubicacion").val(e.latLng.k+","+e.latLng.B)
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(e.latLng.k,e.latLng.B),
+                    map: map,
+                    title: 'Click to zoom',
+                    draggable: true,
+
+                });
+
+                arreglo=marker
+                google.maps.event.addListener(arreglo, 'dragend', function(e) {
+                
+                     $("#id_ubicacion").val(e.latLng.k+","+e.latLng.B)
+
+                } );
+                //marker.setMap(null);
+                //console.log(marker.getPosition())
+                //center = new google.maps.LatLng(-34.397, 150.644)
+                    
+            }
+       var borrar=function(e){
+            if(arreglo!="")
+                arreglo.setMap(e)
+       }
+     //funcion mostrar ubicacion registrada en el mapa
+
+     $(document).ready(PosFarmacia);
+
+       function PosFarmacia() {
+         var p = document.getElementById("id_ubicacion").value;
+         var Pos=p.toString();
+         var lon = new Array()
+         var lat = new Array()
+
+        for (var i = 0; i< Pos.length; i++) {
+         var caracter = Pos.charAt(i);
+         if( caracter == ",") {
+                break;
+            }  
+         else
+              lon[i]=caracter
+        }
+
+        longt=parseFloat(lon.join(""));//longitud
+
+        for (var j = 0; j< Pos.length; j++) {
+         var caracter = Pos.charAt((j+lon.length)+1);
+                lat[j]=caracter 
+        }
+
+        latit=parseFloat(lat.join(""));//latitud
+        
+         var latLng = new google.maps.LatLng(longt,latit);
+            marker = new google.maps.Marker({
+            map: map,//el mapa creado en el paso anterior
+            position: latLng,//objeto con latitud y longitud
+            //draggable: true //que el marcador se pueda arrastrar
+        });
+     }
+    
+    </script>
+
+<div style="position: absolute; top:50px; right:150px;" id="mapas">
+   
+</div >
+<div style="position: absolute; left:420px; bottom:50px; width:600px">
+Por favor indique la Posicion de su Farmacia en el Mapa intente poner la Ubicacion Exacta 
+El servicio que brindamos le ayudara a tener clientela cerca de Usted
+</div>
+   
+
+{% endblock %}
+

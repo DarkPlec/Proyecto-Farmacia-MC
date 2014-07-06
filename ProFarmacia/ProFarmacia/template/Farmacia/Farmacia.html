@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block Farmacia %}
+
+
+<nav class="navigation-bar dark">
+    <nav class="navigation-bar-content drop-up">
+        <div class="element">
+            <a class="dropdown-toggle" href="#">Su Farmacia</a>
+
+            <ul class="dropdown-menu" data-role="dropdown">
+                <li><a href="#">Main</a></li>
+                <li><a href="#">File Open</a></li>
+                <li class="divider"></li>
+                <li><a href="/Minventario/">Revisar Inventario</a></li>
+                <li class="divider"></li>
+                <li><a href="/cerrar/">Cerrar Secion</a></li>
+            </ul>
+        </div>
+        
+        <span class="element-divider"></span>
+        <a class="element brand" href="#"><span class="icon-spin"></span></a>
+        <a class="element brand" href="/Imprimir_Inventario/"><span class="icon-printer"></span></a>
+        <span class="element-divider"></span>
+        
+                
+        <div class="element input-element">
+            <form method="POST" name="buscardor">
+                {%csrf_token%}
+              <span style="top:-5px;position:relative;">Buscar Medicamento </span>
+              <div class="input-control text">
+                    {{formB.B_med}}
+                    <button class="btn-search"></button>
+                </div>
+            </form>
+        </div>
+ 
+        <div class="element place-right">
+            <a class="dropdown-toggle" href="#">
+                <span class="icon-cog"></span>
+            </a>
+            <ul class="dropdown-menu place-right" data-role="dropdown">
+                <li><a href="/Rginventario/">Registrar Inventario</a></li>
+                <li><a href="/Ventas/">Ventas</a></li>
+                <li><a href="/Imprimir_reportes/">Reportes Ventas</a></li>
+                <li><a href="#">Buy Now</a></li>
+            </ul>
+        </div>
+        <span class="element-divider place-right"></span>
+        <a class="element place-right" href="#"><span class="icon-locked-2"></span></a>
+        <span class="element-divider place-right"></span>
+        <button class="element image-button image-left place-right">
+            {{usuario}}
+
+            <img src="/static/images/live1.jpg"/>
+        </button>
+    </nav>
+</nav>
+<div>
+    {{ErrorM}}
+    <table class="table striped" style="width:500px; position:absolute; top:60px; left:450px">
+        {%for item in lis_M%}
+        <tr>
+            <td>Medicamento: {{ item.Name_med }}</td>
+            <td>Cantidad: {{ item.Cantidad }}</td>
+            <td>P/u: {{ item.Costo }} Bs</td>
+        </tr>    
+        {% endfor %}
+    </table>
+</div>
+<!--<div>
+    <iframe width="760" height="250" src="/ApliVentBuscar/" scrolling="yes" frameborder="no"></iframe>
+</div>-->
+<!--Formulario Busqueda de Medicamentos-->
+<form name="buscarM" id="buscarM" method="POST" action="">
+     {% csrf_token %}
+    <table class="table striped" style="width:500px; position:absolute; top:150px; left:450px">
+        <tr align="center" >
+            <td colspan="3" > Aplicacion ventas</td>
+        </tr>
+
+        {{formV}}
+    </table>
+</form>
+<!--Formulario para la VENTA-->
+{% endblock %}
+
+

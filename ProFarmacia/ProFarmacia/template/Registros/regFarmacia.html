@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block Rfarmacia %}
+<div class="tile-area tile-area-dark">
+    <div style="position: absolute; left:80px; bottom:60px;">
+    <a href="/Principal/"><button class="command-button">
+    <i class="icon-share-3 on-right"></i>
+    Pagina Principal
+    <small>..........................................</small>
+    </button></a>
+    </div>
+
+     <div><h2 class="tile-area-title fg-white">Registre Su Farmacia</h2></div>
+     <form name="registro" method="post" > {% csrf_token %}
+          <div  class="tile-group-title fg-white">
+                    <div>
+                    	<div>{{ formRF.usuario.errors }}</div>
+                    	<label><strong>Nombre de Usuario:</strong></label>
+                    	<div>{{ formRF.usuario }}</div>
+
+                    </div>
+
+                    <div>
+                    	<div>{{ formRF.farmacia.errors }}</div>
+                    	<label><strong>Nombre de su Farmacia:</strong></label>
+                    	<div>{{ formRF.farmacia }}</div>
+
+                    </div>
+
+                    <div>
+                    	<div>{{ formRF.ubicacion.errors }}</div>
+                    	<label><strong>Ubicacion:</strong></label>
+                    	<div>{{ formRF.ubicacion }}</div>
+
+                    </div>  
+
+                    
+
+                    <div>
+                    	<div>{{ formRF.email.errors }}</div>
+                    	<label><strong>Correo Electronico:</strong></label>
+                    	<div>{{ formRF.email }}</div>
+
+                    </div>
+
+                    
+
+                    <div>
+                    	<div>{{ formRF.password1.errors }}</div>
+                    	<label><strong>Contraseña:</strong></label>
+                    	<div>{{ formRF.password1 }}</div>
+
+                    </div>
+
+
+
+
+
+                    <div>
+                    	<div>{{ formRF.password2.errors }}</div>
+                    	<label><strong>Repita su Contraseña:</strong></label>
+                    	<div>{{ formRF.password2 }}</div>
+
+                    </div>
+                    <div>
+                        </br>
+                    </div>
+                
+
+                    <div>
+                        <input type="submit" class="primary" value="registrar" />
+                        <input type="reset" class="bg-darkRed fg-white" value="Cancelar" />
+                    </div>
+
+                     <div>
+                        </br>
+                    </div>
+                
+
+                    <div style="width:300px;">
+                        {{Error1}}
+                        {{Exito}}
+                    </div> 
+
+
+
+    </form> 
+
+
+ <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB5DEWXGuV6Ixh0xCNmk6M4ls0PMtIZBRo&sensor=false">
+ </script>
+
+    <style type="text/css">
+            #mapas{
+
+                width:800px;
+                height:450px;
+            }
+    </style>
+    <script type="text/javascript">
+        var map
+        jQuery(document).ready(function($) {
+            var mapOptions = {
+                center: new google.maps.LatLng(-19.574676,-65.760598),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+             map = new google.maps.Map(document.getElementById("mapas"),mapOptions);
+             google.maps.event.addDomListener(map, 'click', showAlert);
+
+        });
+        var arreglo=""
+        var showAlert=function(e){
+                borrar(null)
+                $("#id_ubicacion").val(e.latLng.k+","+e.latLng.B)
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(e.latLng.k,e.latLng.B),
+                    map: map,
+                    title: 'Click to zoom',
+                    draggable: true,
+
+                });
+
+                arreglo=marker
+                google.maps.event.addListener(arreglo, 'dragend', function(e) {
+                
+                     $("#id_ubicacion").val(e.latLng.k+","+e.latLng.B)
+
+                } );
+                //marker.setMap(null);
+               // console.log(marker.getPosition())
+                //center = new google.maps.LatLng(-34.397, 150.644)
+                    
+            }
+       var borrar=function(e){
+            if(arreglo!="")
+                arreglo.setMap(e)
+       }
+        
+    </script>
+
+<div style="position: absolute; top:50px; right:100px;" id="mapas">
+   
+</div >
+<div style="position: absolute; left:420px; bottom:50px; width:600px">
+Por favor indique la Posicion de su Farmacia en el Mapa intente poner la Ubicacion Exacta 
+El servicio que brindamos le ayudara a tener clientela cerca de Usted
+</div>
+
+{% endblock %}
+

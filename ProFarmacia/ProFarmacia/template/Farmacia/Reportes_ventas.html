@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block Reportes %}
+
+<style type="text/css">
+	h1{color: white; display:block; background:black; padding: 5px; text-align: center;}
+	table{padding: 5px;}
+	th{color: black ; background:skyblue;}
+	td{text-align: inherit;}
+</style>
+
+<h1>Reportes Ventas</h1>
+
+<table  class="table hovered" border="1">
+	<tr>
+		
+		<th class="text-left">Nombre de Medicamento</th>
+		<th class="text-left">Cantidad Vendida</th>
+		<th class="text-left">Total Cobrado</th>
+		<th class="text-left">Fecha de Venta</th>
+		
+{%for item in Mreporte%}
+	<tr>
+		<td>{{ item.Name_med }}</td>
+		<td align="right">{{ item.CantidadV }}</td>
+		<td align="right">{{ item.Total }} Bs</td>
+		<td>{{ item.Fecha  }} </td>
+	</tr>    
+{% endfor %}
+	<tr>
+		<td></td>
+		<td></td>
+		<td align="right">Total : {{TotalVentas}}</td>
+		<td></td>
+	</tr>
+</table>
+{% endblock %}

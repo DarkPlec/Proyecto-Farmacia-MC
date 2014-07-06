@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block login %}
+<!--<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$("#login").submit(function(event) {
+			var info=$(this).serializeObject()
+			$.ajax({
+				url: '/login/',
+				type: 'POST',
+				data: info,
+			})
+			.done(function() {
+				//arreglar
+				url = "UFarmacia";
+				$(location).attr('href',url);
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+			return false;
+		});
+	})
+</script>-->
+
+<div class="tile-area tile-area-dark">
+	<div style="position:absolute; left:270px; top:90px;">
+		 <h1 class="tile-group-title fg-white">Iniciar Sesion</h1>
+	</div>
+	<div style="position:absolute; left:200px; top:100px;">
+		<a href="/Principal/"><button style="background-color:#1d1d1d;">
+    		 <img src="{{STATIC_URL}}images/back.png" 	width="40px" >
+		</button></a>
+	</div>
+
+	<div style="position:absolute; top:160px; left:320px;">
+	 		<span style="color:red;">{{Error}}</span>
+	 		<span style="color:red;">{{Error2}}</span>
+	</div>
+ 		<div style="position:absolute; top:200px; left:290px;">
+ 			<form action="" method="POST" id="login">
+ 					{% csrf_token %}
+ 				<table style="background-color:#1d1d1d;">
+ 					<tr >
+ 						<td class="tile-group-title fg-white">Usuario:</td>
+ 						<td class="tile-group-title fg-white">{{ formulario.usr }}</td>
+ 						<td class="tile-group-title fg-white">{{ formulario.usr.errors }}</td>
+ 					</tr>
+ 					<tr>
+ 						<td class="tile-group-title fg-white">Password:</td>
+ 						<td class="tile-group-title fg-white">{{ formulario.pas }}</td>
+ 						<td class="tile-group-title fg-white">{{ formulario.pas.errors }}</td>
+ 					</tr>
+ 					<tr>
+						<td style="background-color:#1d1d1d;" colspan="3"><br></td>
+					</tr>
+ 					<tr>
+ 						<td colspan="3" align="center">
+ 							<input type="submit" class="primary" value="Iniciar Sesion" />
+ 						</td>
+ 					</tr>
+ 				</table>
+ 			</form>
+ 			<div>
+ 				<a href="/RecuperarPassword/">Olvidaste Tu contraseña</a>
+ 			</div>
+ 		</div>
+
+ 		<div style="position:absolute; right:200px; top:20px;">
+    	 	<img src="{{STATIC_URL}}images/user.png">
+ 		</div>
+
+	
+</div>
+
+
+{% endblock %}
