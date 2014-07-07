@@ -3,7 +3,7 @@
 <div style="position:absolute; left:20px; top:15px">
 	<h1><a href="/Principal/"><i class="icon-arrow-left-3 fg-darker smaller"></i></a></h1><h2>Volver Atras</h2>
 </div>
-<div style="position:absolute; top:10px; left:460px;">
+<div style="position:absolute; top:10px; left:220px;">
 	<form action="" method="post" >
 		{% csrf_token %}
 		<table>
@@ -15,16 +15,9 @@
 				<td align="center">{{formBG.N_Medicamento}}</td>
 				<td >{{ formulario.N_Medicamento.errors }}</td>
 			</tr>
-			<tr>
-			 <td  colspan="3"align="center">Su posicion:<br>
-			 	<input type="text" id="puLat"><br>
-			 	<input type="text" id="puLog">
-			 </td>
-			</tr>
 			<tr><td><br></b></td></tr>
 			<tr>
 				<td colspan="2" align="center"><input type="submit" value="Buscar"/>
-					<input type="button" value="mostrar" class="Mostrar"/>
 				</td>
 
 			</tr>
@@ -33,7 +26,7 @@
 </div>
 <div style="position:absolute; left:90px;">
 
-<table class="table bordered" style=" width:700px; position:absolute; left:-70px;top:230px; ">
+<table class="table bordered" style=" width:700px; position:absolute; left:-70px;top:210px; ">
 		<tr>
 			<th width="200px">Medicamento</th>
 			<th width="150px">Presios</th>
@@ -42,7 +35,7 @@
 		</tr>
 </table>
 	<div>
-	<table border="1" style="position:absolute; left:-70px; top:280px; width:297px"; class="table bordered">
+	<table border="1" style="position:absolute; left:-70px; top:250px; width:297px"; class="table bordered">
 		
 			{%for item in med%}
 			
@@ -54,7 +47,7 @@
 			{% endfor %}
 	</table>
 
-	<table border="1" style="position:absolute; left:226px; top:280px;width:166px"; class="table bordered" >
+	<table border="1" style="position:absolute; left:226px; top:250px;width:166px"; class="table bordered" >
 		{%for i in F%}
 		<tr>
 			<td>
@@ -64,11 +57,11 @@
 		{% endfor %}
 	</table>
 
-	<table border="1" style="position:absolute; left:390px; top:280px;width:241px"; class="table bordered" id="idTabla">
+	<table border="1" style="position:absolute; left:390px; top:250px;width:241px"; class="table bordered" id="idTabla">
 		{%for i in U%}
 		<tr>
-			<td >
-				<a longitud="{{i}}" class="boton">{{i}}</a>
+			<td class="bs">
+				<a longitud="{{i}}" class="boton">Ver Como LLegar</a>
 			</td>
 		</tr>
 		{% endfor %}
@@ -78,7 +71,7 @@
 
 </div>
 
-<div style="position:absolute; top:150px; left:550px">
+<div style="position:absolute; top:250px; left:230px">
 	<span><h2 style="color:red;">{{Error}}</h2></span>
 </div>
 <script type="text/javascript"
@@ -87,121 +80,63 @@
 
 
 <style type="text/css">
-			#mapas{
+			#map_canvas{
 
-				width:600px;
-				height:425px;
+				width:620px;
+				height:300px;
 			}
+
 </style>
 	<script type="text/javascript">
-    //Declaramos las variables que vamos a user
-	//var lat = null;
-	//var lng = null;
-	var map = null;
-	var geocoder = null;
-	var marker = null;
-    var longitud;   
-
-	$(document).ready(inicio);
-	function inicio()
+$(document).ready(UbicacionFarmcia);
+	function UbicacionFarmcia()
 	{
     $(".boton" ).click(function( event ) {
         event.preventDefault();
         longitud=$(this).attr("longitud");
+        document.getElementById("destino").value=longitud;
+        getDirections();
         //var latitud=$(this).attr("latitud");
         //alert(longitud);
         //Aqui llamas a la funcion que ya tiene para dibujar el mapa por ejemplo si seria dibujar:
-        initialize();
+        //initialize();
     });
 	}
-  
-    function initialize() {
-    	///////////////////////////////////////////////////////////////////
-     	var Pos=longitud.toString();
-     	var lon = new Array()
-     	var lat = new Array()
 
-     	for (var i = 0; i< Pos.length; i++) {
-         var caracter = Pos.charAt(i);
-         if( caracter == ",") {
-         		break;
-          	}  
-         else
-         	  lon[i]=caracter
-   		}
-
-   		longt=parseFloat(lon.join(""));//longitud
-
-   		for (var j = 0; j< Pos.length; j++) {
-         var caracter = Pos.charAt((j+lon.length)+1);
-         		lat[j]=caracter 
-   		}
-
-   		latit=parseFloat(lat.join(""));//latitud
-		////////////////////////////////////Calcular Distancia mas corta//////////////////////////////////////////////
-		//var distancia = google.maps.geometry.spherical.computeDistanceBetween(pU,pF)
-		/////////////////////////////////////////////////////////////////////////////////
-        var latLng = new google.maps.LatLng(longt,latit);
-      
-      		//Definimos algunas opciones del mapa a crear
-       	 var myOptions = {
-          center: latLng,//centro del mapa
-          zoom: 17,//zoom del mapa
-          mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa, carretera, híbrido,etc
-          };
-        //creamos el mapa con las opciones anteriores y le pasamos el elemento div
-        	map = new google.maps.Map(document.getElementById("mapas"), myOptions);
-         
-        //creamos el marcador en el mapa
-        	marker = new google.maps.Marker({
-            map: map,//el mapa creado en el paso anterior
-            position: latLng,//objeto con latitud y longitud
-            //draggable: true //que el marcador se pueda arrastrar
-        });
-        
-      	 //función que actualiza los input del formulario con las nuevas latitudes
-      	 //Estos campos suelen ser hidden
-       
-         
-   	 }
-
-   	 $(document).ready(Mostrar);
+////////////////////////////////////////////////////777
+/*	var posiciones = new Array()
+   	$(document).ready(Mostrar);
 	function Mostrar()
 	{
     $(".Mostrar" ).click(function( event ) {
        var tabla = document.getElementById("idTabla");
 		var tdsTabla2 = tabla.getElementsByTagName("a");
 		var i =0;
-		var posiciones = new Array()
+		//var posiciones = new Array()
 		for (i=0; i<tdsTabla2.length; i++){
 			  posiciones[i]=tdsTabla2[i].innerHTML;
-			  alert(posiciones[i]);
+			  //alert(posiciones[i]);
 			  //console.log(posiciones)
 		}
     });
-	}
-    
-
-
-    </script>
-
-    <script type="text/javascript">
-        var map
+	}*/
+///////////////////////////////////Poner la posicion del Usuario/////////////
+	var map
         jQuery(document).ready(function($) {
             var mapOptions = {
                 center: new google.maps.LatLng(-19.574676,-65.760598),
                 zoom: 15,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-             map = new google.maps.Map(document.getElementById("mapas"),mapOptions);
+             map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
              google.maps.event.addDomListener(map, 'click', showAlert);
 
         });
         var arreglo=""
         var showAlert=function(e){
                 borrar(null)
-                $("#puLat").val(e.latLng.k);
-                $("#puLog").val(e.latLng.B);
+                $("#origen").val(e.latLng.k+","+e.latLng.B)
+
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(e.latLng.k,e.latLng.B),
                     map: map,
@@ -212,8 +147,8 @@
 
                 arreglo=marker
                 google.maps.event.addListener(arreglo, 'dragend', function(e) {
-                                     $("#puLat").val(e.latLng.k);
-                                     $("#puLog").val(e.latLng.B);
+                
+                     $("#origen").val(e.latLng.k+","+e.latLng.B)
 
                 } );
                 //marker.setMap(null);
@@ -225,19 +160,118 @@
             if(arreglo!="")
                 arreglo.setMap(e)
        }
-        
-    </script>
 
-	<div id="mapas" style="position: absolute; top:200px; right:20px;">
+////////////////////////////////////////////////////////////////////////////
+
+</script>
+<!--//////////////////////Marcar Ruta ///////////////////-->
+<script type="text/javascript">
+	var map = null;
+	var directionsDisplay = null;
+	var directionsService = null;
+
+	function initialize() {
+	   /*var myLatlng = new google.maps.LatLng(20.68009, -101.35403);
+	    var myOptions = {
+	        zoom: 4,
+	        center: myLatlng,
+	        mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    map = new google.maps.Map($("#map_canvas").get(0), myOptions);*/
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		directionsService = new google.maps.DirectionsService();
+
+	}
+
+	function getDirections(){
+		var start = $('#origen').val();
+		var end = $('#destino').val();
+		if(!start || !end){
+			alert("Es requerido su posicion en el mapa para empezar");
+			return;
+		}
+		var request = {
+		        origin: start,
+		        destination: end,
+		        travelMode: google.maps.DirectionsTravelMode[$('.routeOptions').val()],
+		        unitSystem: google.maps.DirectionsUnitSystem[$('.unitSystem').val()],
+		        provideRouteAlternatives: true
+	    };
+
+		directionsService.route(request, function(response, status) {
+    		if (status == google.maps.DirectionsStatus.OK) {
+       		directionsDisplay.setMap(map);
+        	directionsDisplay.setPanel($("#panel_ruta").get(0));
+        	directionsDisplay.setDirections(response);
+    		} else {
+            	alert("No existen rutas entre ambos puntos");
+    		}
+		});
+		console.log(directionsService.route);
+	}
+
+	//$('#search').live('click', function(){ getDirections(); });
+	//$('.routeOptions').live('change', function(){ getDirections(); });
+
+
+	$(document).ready(Iniciar);
+	function Iniciar(){
+		//$("#search" ).click(function( event ) {
+       				//getDirections();
+    	//});
+
+    	$(".routeOptions" ).live(function( event ) {
+       				getDirections();
+    	});
+
+
+
+	}
+	
+	$(document).ready(function() {
+	    initialize();
+   		gmaps_ads();
+	}); 
+</script>
+<!--////////////////////////////////////////////////////////77-->
+
+	<div id="map_canvas" style="position: absolute; top:5px; right:10px;">
 
 	</div>
 
-	<div style="position:absolute; left:300px; top:5px;">
-    	 <img src="{{STATIC_URL}}images/Marcador.png" width="200px">
+
+	<div style="position:absolute; left:150px; top:5px;">
+    	 <img src="{{STATIC_URL}}images/Marcador.png" width="100px">
  	</div>
- 	<div style="position:absolute; right:300px; top:5px;">
-    	 <img src="{{STATIC_URL}}images/Marcador.png" width="210px">
+ 	<div style="position:absolute; right:650px; top:5px;">
+    	 <img src="{{STATIC_URL}}images/Marcador.png" width="100px">
  	</div>
+
+<div style="position: absolute; top:10px; right:20px;">
+<div>
+    <input type="hidden" name="origen" id="origen"/>
+    <input type="hidden" name="destino" id="destino"/>
+</div>
+<br />
+</div>
+
+<div style="position: absolute; top:160px; left:280px;"> <h3>Opciones</h3> </div>
+<div style="position: absolute; top:170px; left:380px;">
+<div id="rutaOps" >
+    <select id="modo_viaje" class="routeOptions">
+        <option value="DRIVING" selected="selected">Auto</option>
+        <option value="BICYCLING">Bicicleta</option>
+        <option value="WALKING">Caminando</option>
+    </select>
+    <select id="tipo_sistema" class="unitSystem">
+        <option value="METRIC" selected="selected">Métrico</option>
+        <option value="IMPERIAL">Imperial</option>
+    </select>
+</div>
+<br />
+</div>
+
+    <div id="panel_ruta" style="position:absolute; right:10px;top:310px; width:620px; height:330px; overflow: scroll;"></div>
 
 
 {% endblock %}

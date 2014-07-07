@@ -22,3 +22,7 @@ class ReporteVentas(models.Model):
 	Total=models.FloatField(max_length=10,null=False)
 	Fecha=models.DateField(auto_now=True)
 
+#class ContadorBusq(models.Model):
+#	ID_Usuario=models.CharField(max_length=30)
+#	Name_med=models.CharField(max_length=100)
+#	Contador=models.IntegerField(max_length=100)
