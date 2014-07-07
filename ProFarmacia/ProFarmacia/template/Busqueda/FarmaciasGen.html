@@ -3,7 +3,7 @@
 <div style="position:absolute; left:20px; top:15px">
 	<h1><a href="/Principal/"><i class="icon-arrow-left-3 fg-darker smaller"></i></a></h1><h2>Volver Atras</h2>
 </div>
-<div style="position:absolute; top:10px; left:500px;" >
+<div style="position:absolute; top:10px; left:280px;" >
 		<form action="" method="POST">
 			{% csrf_token %}
 			<table>
@@ -22,12 +22,12 @@
 
 	</div>
 
-<div style="position:absolute; top:170px;">
+<div style="position:absolute; top:200px;">
 	<table class="table hovered" style="width:700px;">
 		<tr>
 			{%for i in Farmacias%}
 			<td colspan="2"><h3 style="color:green;">Farmacia {{i.Name_Farmacia}}</h3></td>
-			<td><a longitud="{{i.Ubicacion}}" class="boton"><h3 style="color:green">Ver Su ubicacion en el mapa</h3></a></td>
+			<td><a longitud="{{i.Ubicacion}}" class="boton"><h3 style="color:green">¿Como LLegar?</h3></a></td>
 			{%endfor%}
 		</tr>
 		<tr>
@@ -44,105 +44,204 @@
 		{%endfor%}
 	</table>
 </div>
-<div style="position:absolute; top:140px; left:500px;color:red;">
+<div style="position:absolute; top:140px; left:290px;color:red;">
 {{Error}}
 {{Error2}}
 </div>
 
-<div style="position:absolute; left:300px; top:5px;">
-    	 <img src="{{STATIC_URL}}images/Cruz.png" width="150px">
+<div style="position:absolute; left:170px; top:5px;">
+    	 <img src="{{STATIC_URL}}images/Cruz.png" width="100px">
  </div>
- <div style="position:absolute; right:350px; top:5px;">
-    	 <img src="{{STATIC_URL}}images/Farmacia.png" width="150px">
+ <div style="position:absolute; right:655px; top:5px;">
+    	 <img src="{{STATIC_URL}}images/Farmacia.png" width="100px">
  </div>
 
 <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBOPvzpjstSF8bboQOu1Kui6BEfYc0K_Fc&sensor=false">
  </script>
+<style type="text/css">
+			#map_canvas{
 
- <style type="text/css">
-			#mapas{
-
-				width:600px;
-				height:425px;
+				width:620px;
+				height:300px;
 			}
+
 </style>
-
-<script type="text/javascript">
-        //Declaramos las variables que vamos a user
-	//var lat = null;
-	//var lng = null;
-	var map = null;
-	var geocoder = null;
-	var marker = null;
-    var longitud;   
-
-	$(document).ready(inicio);
-	function inicio()
+	<script type="text/javascript">
+$(document).ready(UbicacionFarmcia);
+	function UbicacionFarmcia()
 	{
     $(".boton" ).click(function( event ) {
         event.preventDefault();
         longitud=$(this).attr("longitud");
+        document.getElementById("destino").value=longitud;
+        getDirections();
         //var latitud=$(this).attr("latitud");
         //alert(longitud);
         //Aqui llamas a la funcion que ya tiene para dibujar el mapa por ejemplo si seria dibujar:
-        initialize();
+        //initialize();
     });
 	}
-  
-    function initialize() {
 
-     	var Pos=longitud.toString();
-     	var lon = new Array()
-     	var lat = new Array()
+////////////////////////////////////////////////////777
+/*	var posiciones = new Array()
+   	$(document).ready(Mostrar);
+	function Mostrar()
+	{
+    $(".Mostrar" ).click(function( event ) {
+       var tabla = document.getElementById("idTabla");
+		var tdsTabla2 = tabla.getElementsByTagName("a");
+		var i =0;
+		//var posiciones = new Array()
+		for (i=0; i<tdsTabla2.length; i++){
+			  posiciones[i]=tdsTabla2[i].innerHTML;
+			  //alert(posiciones[i]);
+			  //console.log(posiciones)
+		}
+    });
+	}*/
+///////////////////////////////////Poner la posicion del Usuario/////////////
+	var map
+        jQuery(document).ready(function($) {
+            var mapOptions = {
+                center: new google.maps.LatLng(-19.574676,-65.760598),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+             map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+             google.maps.event.addDomListener(map, 'click', showAlert);
 
-     	for (var i = 0; i< Pos.length; i++) {
-         var caracter = Pos.charAt(i);
-         if( caracter == ",") {
-         		break;
-          	}  
-         else
-         	  lon[i]=caracter
-   		}
-
-   		longt=parseFloat(lon.join(""));//longitud
-
-   		for (var j = 0; j< Pos.length; j++) {
-         var caracter = Pos.charAt((j+lon.length)+1);
-         		lat[j]=caracter 
-   		}
-
-   		latit=parseFloat(lat.join(""));//latitud
-
-        //geocoder = new google.maps.Geocoder();
-        //Si no creamos el objeto con una latitud cualquiera como la de Mar del Plata, Argentina por ej
-         var latLng = new google.maps.LatLng(longt,latit);
-      
-      		//Definimos algunas opciones del mapa a crear
-       	 var myOptions = {
-          center: latLng,//centro del mapa
-          zoom: 17,//zoom del mapa
-          mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa, carretera, híbrido,etc
-          };
-        //creamos el mapa con las opciones anteriores y le pasamos el elemento div
-        	map = new google.maps.Map(document.getElementById("mapas"), myOptions);
-         
-        //creamos el marcador en el mapa
-        	marker = new google.maps.Marker({
-            map: map,//el mapa creado en el paso anterior
-            position: latLng,//objeto con latitud y longitud
-            //draggable: true //que el marcador se pueda arrastrar
         });
-        
-      	 //función que actualiza los input del formulario con las nuevas latitudes
-      	 //Estos campos suelen ser hidden
-       
-         
-   	 }
-    
-    </script>
+        var arreglo=""
+        var showAlert=function(e){
+                borrar(null)
+                $("#origen").val(e.latLng.k+","+e.latLng.B)
 
-	<div id="mapas" style="position: absolute; top:200px; right:20px;">
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(e.latLng.k,e.latLng.B),
+                    map: map,
+                    title: 'Click to zoom',
+                    draggable: true,
+
+                });
+
+                arreglo=marker
+                google.maps.event.addListener(arreglo, 'dragend', function(e) {
+                
+                     $("#origen").val(e.latLng.k+","+e.latLng.B)
+
+                } );
+                //marker.setMap(null);
+               // console.log(marker.getPosition())
+                //center = new google.maps.LatLng(-34.397, 150.644)
+                    
+            }
+       var borrar=function(e){
+            if(arreglo!="")
+                arreglo.setMap(e)
+       }
+
+////////////////////////////////////////////////////////////////////////////
+
+</script>
+<!--//////////////////////Marcar Ruta ///////////////////-->
+<script type="text/javascript">
+	var map = null;
+	var directionsDisplay = null;
+	var directionsService = null;
+
+	function initialize() {
+	   /*var myLatlng = new google.maps.LatLng(20.68009, -101.35403);
+	    var myOptions = {
+	        zoom: 4,
+	        center: myLatlng,
+	        mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    map = new google.maps.Map($("#map_canvas").get(0), myOptions);*/
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		directionsService = new google.maps.DirectionsService();
+
+	}
+
+	function getDirections(){
+		var start = $('#origen').val();
+		var end = $('#destino').val();
+		if(!start || !end){
+			alert("Es requerido su posicion en el mapa para empezar");
+			return;
+		}
+		var request = {
+		        origin: start,
+		        destination: end,
+		        travelMode: google.maps.DirectionsTravelMode[$('.routeOptions').val()],
+		        unitSystem: google.maps.DirectionsUnitSystem[$('.unitSystem').val()],
+		        provideRouteAlternatives: true
+	    };
+
+		directionsService.route(request, function(response, status) {
+    		if (status == google.maps.DirectionsStatus.OK) {
+       		directionsDisplay.setMap(map);
+        	directionsDisplay.setPanel($("#panel_ruta").get(0));
+        	directionsDisplay.setDirections(response);
+    		} else {
+            	alert("No existen rutas entre ambos puntos");
+    		}
+		});
+		console.log(directionsService.route);
+	}
+
+	//$('#search').live('click', function(){ getDirections(); });
+	//$('.routeOptions').live('change', function(){ getDirections(); });
+
+
+	$(document).ready(Iniciar);
+	function Iniciar(){
+		//$("#search" ).click(function( event ) {
+       				//getDirections();
+    	//});
+
+    	$(".routeOptions" ).live(function( event ) {
+       				getDirections();
+    	});
+
+
+
+	}
+	
+	$(document).ready(function() {
+	    initialize();
+   		gmaps_ads();
+	}); 
+</script>
+<!--////////////////////////////////////////////////////////77-->
+
+	<div id="map_canvas" style="position: absolute; top:5px; right:10px;">
 
 	</div>
+
+<div style="position: absolute; top:10px; right:20px;">
+<div>
+    <input type="hidden" name="origen" id="origen"/>
+    <input type="hidden" name="destino" id="destino"/>
+</div>
+<br />
+</div>
+
+<div style="position: absolute; top:160px; left:280px;"> <h3>Opciones</h3> </div>
+<div style="position: absolute; top:170px; left:380px;">
+<div id="rutaOps" >
+    <select id="modo_viaje" class="routeOptions">
+        <option value="DRIVING" selected="selected">Auto</option>
+        <!--<option value="BICYCLING">Bicicleta</option>-->
+        <option value="WALKING">Caminando</option>
+    </select>
+    <select id="tipo_sistema" class="unitSystem">
+        <option value="METRIC" selected="selected">Métrico</option>
+        <option value="IMPERIAL">Imperial</option>
+    </select>
+</div>
+<br />
+</div>
+
+    <div id="panel_ruta" style="position:absolute; right:10px;top:310px; width:620px; height:330px; overflow: scroll;"></div>
 {% endblock container%}
